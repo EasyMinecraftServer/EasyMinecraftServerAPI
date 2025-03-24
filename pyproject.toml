@@ -1,0 +1,32 @@
+[project]
+name = "EasyMinecraftServerAPI"
+version = "0.0.1"
+description = "API for EasyMinecraftServer"
+authors = [
+    {name = "Nucceteere",email = "ruzgar@nucceteere.xyz"}
+]
+license = {text = "AGPL-3.0"}
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "fastapi (>=0.115.12,<0.116.0)"
+]
+
+[project.urls]
+homepage = "https://git.funtimes909.xyz/Nucceteere/EasyMinecraftServerAPI/src/branch/main/README.md"
+repository = "https://git.funtimes909.xyz/Nucceteere/EasyMinecraftServerAPI/"
+documentation = "https://git.funtimes909.xyz/Nucceteere/EasyMinecraftServerAPI/wiki/"
+"Bug Tracker" = "https://git.funtimes909.xyz/Nucceteere/EasyMinecraftServerAPI/issues"
+"Contribute" = "https://git.funtimes909.xyz/Nucceteere/EasyMinecraftServerAPI/pulls"
+
+[tool.poetry]
+package-mode = false # https://python-poetry.org/docs/basic-usage/#operating-modes
+requires-poetry = ">=2.0"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.3.5"
+pre-commit = "^4.2.0"
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
