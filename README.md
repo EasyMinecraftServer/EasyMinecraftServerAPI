@@ -8,7 +8,7 @@
 A FastAPI application to download JAR files
 <br/>
 <br/>
-<!-- <a href="https://git.funtimes909.xyz/Nucceteere/EasyMinecraftServerAPI/wiki"><strong>Explore the docs »</strong></a> -->
+<a href="https://git.funtimes909.xyz/Nucceteere/EasyMinecraftServerAPI/wiki"><strong>Explore the docs »</strong></a>
 <br/>
 <br/>
 <a href="https://api.nucceteere.xyz">View Demo</a>  
