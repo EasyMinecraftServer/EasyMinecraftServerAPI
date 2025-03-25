@@ -4,8 +4,9 @@
 # This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
 # You should have received a copy of the GNU Affero General Public License along with this program. If not, see <https://www.gnu.org/licenses/>.
 
-from fastapi import FastAPI, Response, status
+from fastapi import FastAPI, Response, status, HTTPException
 from fastapi.responses import RedirectResponse
+from data.software import softwares, setupmd
 
 app = FastAPI(
     title="EasyMinecraftServer API",
@@ -15,7 +16,8 @@ app = FastAPI(
         "email": "ruzgar@nucceteere.xyz",
     },
     license_info={
-        "name": "AGPLv3",
+        "name": "AGPL 3.0",
+        "identifier": "AGPL-3.0-or-later",
         "url": "https://www.gnu.org/licenses/agpl-3.0.txt",
     },
     docs_url=None,
@@ -29,6 +31,28 @@ async def example():
         url="https://git.funtimes909.xyz/Nucceteere/EasyMinecraftServerAPI/wiki",
         status_code=status.HTTP_307_TEMPORARY_REDIRECT,
     )
+
+
+@app.get("/download")  # Vanilla, latest version, latest build
+@app.get("/download/{software}")  # Latest version, latest build
+@app.get("/download/{software}/{version}")  # Latest build
+@app.get(
+    "/download/{software}/{version}/{build}"
+)  # Specific build (No Effect on Vanilla)
+async def download(
+    software: str = "vanilla", version: str = "latest", build: str = "latest"
+):
+    if software not in softwares:
+        raise HTTPException(
+            status_code=406, detail=f"Software '{software}' is not supported!"
+        )  # https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Status/406
+    elif software in setupmd:
+        return RedirectResponse(
+            url=f"https://jar.setup.md/download/{software}/{version}/{build}",
+            status_code=status.HTTP_307_TEMPORARY_REDIRECT,
+        )
+    else:
+        raise HTTPException(status_code=503, detail="Not Implemented!")
 
 
 @app.get("/security", operation_id="security", include_in_schema=False)
