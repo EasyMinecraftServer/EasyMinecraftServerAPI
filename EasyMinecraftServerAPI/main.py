@@ -7,11 +7,8 @@
 from fastapi import FastAPI, Response, status
 from fastapi.responses import RedirectResponse
 
-description = "EasyMinecraftServer API implemented in Python <br> Maintained by [Nucceteere](https://git.funtimes909.xyz/Nucceteere) <br> [Docs](https://git.funtimes909.xyz/Nucceteere/EasyMinecraftServerAPI/wiki)"
-
 app = FastAPI(
     title="EasyMinecraftServer API",
-    description=description,
     version="0.0.1",
     contact={
         "name": "Nucceteere",
