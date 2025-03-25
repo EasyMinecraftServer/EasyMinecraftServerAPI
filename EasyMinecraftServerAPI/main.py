@@ -4,8 +4,8 @@
 # This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
 # You should have received a copy of the GNU Affero General Public License along with this program. If not, see <https://www.gnu.org/licenses/>.
 
-
-from fastapi import FastAPI, Response
+from fastapi import FastAPI, Response, status
+from fastapi.responses import RedirectResponse
 
 description = "EasyMinecraftServer API implemented in Python <br> Maintained by [Nucceteere](https://git.funtimes909.xyz/Nucceteere) <br> [Docs](https://git.funtimes909.xyz/Nucceteere/EasyMinecraftServerAPI/wiki)"
 
@@ -27,8 +27,11 @@ app = FastAPI(
 
 
 @app.get("/")
-async def root():
-    return {"message": "Hello World"}
+async def example():
+    return RedirectResponse(
+        url="https://git.funtimes909.xyz/Nucceteere/EasyMinecraftServerAPI/wiki",
+        status_code=status.HTTP_307_TEMPORARY_REDIRECT,
+    )
 
 
 @app.get("/security", operation_id="security", include_in_schema=False)
@@ -41,7 +44,7 @@ async def root():
     operation_id="well-known-security.txt",
     include_in_schema=False,
 )
-def security():
+async def security():
     data = """Contact: mailto:ruzgar@nucceteere.xyz
 Expires: 2027-12-31T23:59:00.000Z
 Preferred-Languages: en, tr
