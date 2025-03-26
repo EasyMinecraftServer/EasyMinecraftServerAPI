@@ -14,10 +14,13 @@ dependencies = [
 
 [project.urls]
 homepage = "https://git.funtimes909.xyz/Nucceteere/EasyMinecraftServerAPI/src/branch/main/README.md"
+"GitHub Repository" = "https://github.com/EasyMinecraftServer/EasyMinecraftServerAPI"
 repository = "https://git.funtimes909.xyz/Nucceteere/EasyMinecraftServerAPI/"
 documentation = "https://git.funtimes909.xyz/Nucceteere/EasyMinecraftServerAPI/wiki/"
-"Bug Tracker" = "https://git.funtimes909.xyz/Nucceteere/EasyMinecraftServerAPI/issues"
-"Contribute" = "https://git.funtimes909.xyz/Nucceteere/EasyMinecraftServerAPI/pulls"
+"Forgejo Bug Tracker" = "https://git.funtimes909.xyz/Nucceteere/EasyMinecraftServerAPI/issues"
+"GitHub Bug Tracker" = "https://github.com/EasyMinecraftServer/EasyMinecraftServerAPI/issues"
+"Contribute on GitHub" = "https://github.com/EasyMinecraftServer/EasyMinecraftServerAPI/pulls"
+"Contribute on Forgejo" = "https://git.funtimes909.xyz/Nucceteere/EasyMinecraftServerAPI/pulls"
 
 [tool.poetry]
 package-mode = false # https://python-poetry.org/docs/basic-usage/#operating-modes
