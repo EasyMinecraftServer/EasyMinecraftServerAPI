@@ -26,7 +26,7 @@ app = FastAPI(
 
 
 @app.get("/")
-async def example():
+async def root():
     return RedirectResponse(
         url="https://git.funtimes909.xyz/Nucceteere/EasyMinecraftServerAPI/wiki",
         status_code=status.HTTP_307_TEMPORARY_REDIRECT,
