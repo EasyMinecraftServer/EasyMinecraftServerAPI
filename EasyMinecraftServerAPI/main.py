@@ -68,6 +68,13 @@ def download(software: str = "vanilla", version: str = "latest", build: str = "l
             url=f"https://meta.fabricmc.net/v2/versions/loader/{version}/{build}/1.0.3/server/jar",
             status_code=status.HTTP_307_TEMPORARY_REDIRECT,
         )
+    elif software == "quilt":
+        return RedirectResponse(
+            url="https://quiltmc.org/api/v1/download-latest-installer/java-universal",
+            status_code=status.HTTP_307_TEMPORARY_REDIRECT,
+        )
+        # Version picking is handled by the CLI App
+        # See https://quiltmc.org/en/install/server/ for more information
     else:
         raise HTTPException(status_code=503, detail="Not Implemented!")
 

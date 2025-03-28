@@ -1,21 +1,21 @@
 softwares = [
-    "vanilla",
+    "vanilla",  # setup.md
     "bukkit",
     "spigot",
-    "paper",
+    "paper",  # setup.md
     "pufferfish",
-    "purpur",
+    "purpur",  # setup.md
     "leaves",
     "sponge",
     "forge",
     "neoforge",
-    "fabric",
-    "quilt",
+    "fabric",  # done
+    "quilt",  # done
     "bungeecord",
-    "velocity",
-    "folia",
-    "waterfall",
-    "mohist",
+    "velocity",  # setup.md
+    "folia",  # setup.md
+    "waterfall",  # setup.md
+    "mohist",  # setup.md
 ]
 
 setupmd = [
