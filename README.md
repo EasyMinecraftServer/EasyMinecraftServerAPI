@@ -1,6 +1,6 @@
 <br/>
 <div align="center">
-<a href="https://github.com/ShaanCoding/ReadME-Generator">
+<a href="https://github.com/EasyMinecraftServer/EasyMinecraftServerAPI">
 <img src="https://minecraft.wiki/images/Crafter_JE4_BE3.png?3996e&format=original" alt="Logo" width="80" height="80">
 </a>
 <h3 align="center">EasyMinecraftServerAPI</h3>
@@ -8,12 +8,12 @@
 A FastAPI application to download JAR files
 <br/>
 <br/>
-<a href="https://git.funtimes909.xyz/Nucceteere/EasyMinecraftServerAPI/wiki"><strong>Explore the docs »</strong></a>
+<a href="https://github.com/EasyMinecraftServer/EasyMinecraftServerAPI/wiki"><strong>Explore the docs »</strong></a>
 <br/>
 <br/>
 <a href="https://api.nucceteere.xyz">View Demo</a>  
-<a href="https://git.funtimes909.xyz/Nucceteere/EasyMinecraftServerAPI/issues/new">Report Bug</a>
-<a href="https://git.funtimes909.xyz/Nucceteere/EasyMinecraftServerAPI/issues/new">Request Feature</a>
+<a href="https://github.com/EasyMinecraftServer/EasyMinecraftServerAPI/issues/new">Report Bug</a>
+<a href="https://github.com/EasyMinecraftServer/EasyMinecraftServerAPI/issues/new">Request Feature</a>
 </p>
 </div>
 
@@ -49,7 +49,7 @@ To get a local copy up and running follow these simple example steps.
 1. Clone the repo
 
    ```sh
-   git clone https://git.funtimes909.xyz/Nucceteere/EasyMinecraftServer.git
+   git clone https://github.com/EasyMinecraftServer/EasyMinecraftServerAPI.git
    ```
 
 2. Activate Virtual Enviroment
@@ -79,7 +79,7 @@ To get a local copy up and running follow these simple example steps.
 
 ## Roadmap
 
-See the [open issues](https://git.funtimes909.xyz/Nucceteere/EasyMinecraftServerAPI/issues) for a full list of proposed features (and known issues).
+See the [open issues](https://github.com/EasyMinecraftServer/EasyMinecraftServerAPI/issues) for a full list of proposed features (and known issues).
 
 ## Contributing
 
@@ -104,7 +104,7 @@ Distributed under the AGPLv3 License. See [AGPLv3 License](https://www.gnu.org/l
 
 Rüzgar Engür - [@nucceteere.xyz](https://bsky.app/profile/nucceteere.xyz) - ruzgar@nucceteere.xyz
 
-Project Link: [Funtimes909 Git](https://git.funtimes909.xyz/Nucceteere/EasyMinecraftServerAPI)
+Project Link: [GitHub](https://github.com/EasyMinecraftServer/EasyMinecraftServerAPI)
 
 ## Acknowledgments
 
