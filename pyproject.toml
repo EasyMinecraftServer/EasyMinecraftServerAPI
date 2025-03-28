@@ -1,6 +1,6 @@
 [project]
 name = "EasyMinecraftServerAPI"
-version = "0.0.1"
+version = "0.0.3"
 description = "API for EasyMinecraftServer"
 authors = [
     {name = "Nucceteere",email = "ruzgar@nucceteere.xyz"}
