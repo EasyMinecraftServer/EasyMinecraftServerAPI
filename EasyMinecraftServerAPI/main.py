@@ -75,6 +75,24 @@ def download(software: str = "vanilla", version: str = "latest", build: str = "l
         )
         # Version picking is handled by the CLI App
         # See https://quiltmc.org/en/install/server/ for more information
+    elif software == "leaves":
+        if version == "latest":
+            leavesmeta = requests.get("https://api.leavesmc.org/v2/projects/leaves/")
+            data = json.loads(leavesmeta.content)
+            version = data["versions"][len(data["versions"]) - 1]
+        if build == "latest":
+            leavesmeta = requests.get(
+                f"https://api.leavesmc.org/v2/projects/leaves/versions/{version}/builds"
+            )
+            data = json.loads(leavesmeta.content)
+            build = data["builds"][len(data["builds"]) - 1]["build"]
+            filename = data["builds"][len(data["builds"]) - 1]["downloads"][
+                "application"
+            ]["name"]
+        return RedirectResponse(
+            url=f"https://api.leavesmc.org/v2/projects/leaves/versions/{version}/builds/{build}/downloads/${filename}",
+            status_code=status.HTTP_307_TEMPORARY_REDIRECT,
+        )
     else:
         raise HTTPException(status_code=503, detail="Not Implemented!")
 
