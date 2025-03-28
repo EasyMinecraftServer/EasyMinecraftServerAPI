@@ -7,6 +7,8 @@
 from fastapi import FastAPI, Response, status, HTTPException
 from fastapi.responses import RedirectResponse
 from data.software import softwares, setupmd
+import json
+import requests
 
 app = FastAPI(
     title="EasyMinecraftServer API",
@@ -39,9 +41,7 @@ async def root():
 @app.get(
     "/download/{software}/{version}/{build}"
 )  # Specific build (No Effect on Vanilla)
-async def download(
-    software: str = "vanilla", version: str = "latest", build: str = "latest"
-):
+def download(software: str = "vanilla", version: str = "latest", build: str = "latest"):
     if software not in softwares:
         raise HTTPException(
             status_code=406, detail=f"Software '{software}' is not supported!"
@@ -49,6 +49,23 @@ async def download(
     elif software in setupmd:
         return RedirectResponse(
             url=f"https://jar.setup.md/download/{software}/{version}/{build}",
+            status_code=status.HTTP_307_TEMPORARY_REDIRECT,
+        )
+    elif software == "fabric":
+        if version == "latest":
+            fabricmeta = requests.get(
+                "https://meta.fabricmc.net/v2/versions/game"
+            ).content
+            data = json.loads(fabricmeta)
+            version = data[0]["version"]
+        if build == "latest":
+            fabricmeta = requests.get(
+                "https://meta.fabricmc.net/v2/versions/loader"
+            ).content
+            data = json.loads(fabricmeta)
+            build = data[0]["version"]
+        return RedirectResponse(
+            url=f"https://meta.fabricmc.net/v2/versions/loader/{version}/{build}/1.0.3/server/jar",
             status_code=status.HTTP_307_TEMPORARY_REDIRECT,
         )
     else:
