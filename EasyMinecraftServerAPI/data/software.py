@@ -3,9 +3,9 @@ softwares = [
     "bukkit",
     "spigot",
     "paper",  # setup.md
-    "pufferfish",
+    "pufferfish",  # done
     "purpur",  # setup.md
-    "leaves",
+    "leaves",  # done
     "sponge",
     "forge",
     "neoforge",

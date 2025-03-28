@@ -93,8 +93,50 @@ def download(software: str = "vanilla", version: str = "latest", build: str = "l
             url=f"https://api.leavesmc.org/v2/projects/leaves/versions/{version}/builds/{build}/downloads/${filename}",
             status_code=status.HTTP_307_TEMPORARY_REDIRECT,
         )
+    elif software == "pufferfish":
+        if version == "1.21.3":
+            if build == "latest":
+                redirect = (
+                    "https://ci.pufferfish.host/job/Pufferfish-1.21/lastSuccessfulBuild/artifact/build/libs/pufferfish-paperclip-1.21.3-R0.1-SNAPSHOT-mojmap.jar",
+                )
+            else:
+                redirect = (
+                    f"https://ci.pufferfish.host/job/Pufferfish-1.21/{build}/artifact/build/libs/pufferfish-paperclip-1.21.3-R0.1-SNAPSHOT-mojmap.jar",
+                )
+        elif version == "1.20.4":
+            if build == "latest":
+                redirect = (
+                    "https://ci.pufferfish.host/job/Pufferfish-1.20/lastSuccessfulBuild/artifact/build/libs/pufferfish-paperclip-1.20.4-R0.1-SNAPSHOT-reobf.jar",
+                )
+            else:
+                redirect = (
+                    f"https://ci.pufferfish.host/job/Pufferfish-1.20/{build}/artifact/build/libs/pufferfish-paperclip-1.20.4-R0.1-SNAPSHOT-reobf.jar",
+                )
+        elif version == "1.19.4":
+            if build == "latest":
+                redirect = "https://ci.pufferfish.host/job/Pufferfish-1.19/lastSuccessfulBuild/artifact/build/libs/pufferfish-paperclip-1.19.4-R0.1-SNAPSHOT-reobf.jar"
+            else:
+                redirect = f"https://ci.pufferfish.host/job/Pufferfish-1.19/{build}/artifact/build/libs/pufferfish-paperclip-1.19.4-R0.1-SNAPSHOT-reobf.jar"
+        elif version == "1.18.2":
+            if build == "latest":
+                redirect = "https://ci.pufferfish.host/job/Pufferfish-1.18/lastSuccessfulBuild/artifact/build/libs/pufferfish-paperclip-1.18.2-R0.1-SNAPSHOT-reobf.jar"
+            else:
+                redirect = f"https://ci.pufferfish.host/job/Pufferfish-1.18/{build}/artifact/build/libs/pufferfish-paperclip-1.18.2-R0.1-SNAPSHOT-reobf.jar"
+        elif version == "1.17.1":
+            if build == "latest":
+                redirect = "https://ci.pufferfish.host/job/Pufferfish-1.17/lastSuccessfulBuild/artifact/build/libs/Pufferfish-1.17.1-R0.1-SNAPSHOT.jar"
+            else:
+                redirect = f"https://ci.pufferfish.host/job/Pufferfish-1.17/{build}/artifact/build/libs/Pufferfish-1.17.1-R0.1-SNAPSHOT.jar"
+        else:
+            raise HTTPException(
+                status_code=501, detail="Pufferfish does not support this version!"
+            )
+        return RedirectResponse(
+            url=redirect,
+            status_code=status.HTTP_307_TEMPORARY_REDIRECT,
+        )
     else:
-        raise HTTPException(status_code=503, detail="Not Implemented!")
+        raise HTTPException(status_code=501, detail="Not Implemented!")
 
 
 @app.get("/security", operation_id="security", include_in_schema=False)
