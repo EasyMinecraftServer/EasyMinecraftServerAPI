@@ -7,8 +7,9 @@
 from fastapi import FastAPI, Response, status, HTTPException
 from fastapi.responses import RedirectResponse
 from data.software import softwares, setupmd
-import json
 import requests
+import javaproperties
+import json
 
 app = FastAPI(
     title="EasyMinecraftServer API",
@@ -137,6 +138,32 @@ def download(software: str = "vanilla", version: str = "latest", build: str = "l
         )
     else:
         raise HTTPException(status_code=501, detail="Not Implemented!")
+
+
+@app.get("/config/server.properties")
+async def serverproperties():
+    propertiesdata = requests.get("https://server.properties/")
+    properties = javaproperties.loads(propertiesdata.content)
+    properties["hide-online-players"] = "true"
+    properties["white-list"] = "true"
+    properties = javaproperties.dumps(properties)
+    return Response(content=properties, media_type="text/x-java-properties")
+
+
+@app.get("/config/whitelist.json")
+async def whitelistjson(username: str = None):
+    if username is None:
+        raise HTTPException(
+            status_code=418,
+            detail="Please enter a username. Example: /config/whitelist.json?username=Notch",
+        )
+    playermeta = requests.get(f"https://playerdb.co/api/player/minecraft/{username}")
+    if playermeta.status_code == 400:
+        raise HTTPException(status_code=418, detail="User doesn't exist!")
+    playermeta = json.loads(playermeta.content)
+    uuid = playermeta["data"]["player"]["id"]
+    whitelist = [{"uuid": uuid, "name": username}]
+    return whitelist
 
 
 @app.get("/security", operation_id="security", include_in_schema=False)
