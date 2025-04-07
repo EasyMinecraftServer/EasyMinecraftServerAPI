@@ -10,6 +10,7 @@ from data.software import softwares, setupmd
 import requests
 import javaproperties
 import json
+import xml.etree.ElementTree as ET
 
 app = FastAPI(
     title="EasyMinecraftServer API",
@@ -136,6 +137,18 @@ def download(software: str = "vanilla", version: str = "latest", build: str = "l
             url=redirect,
             status_code=status.HTTP_307_TEMPORARY_REDIRECT,
         )
+    elif software == "neoforge":
+        neoversions = []
+        xml = requests.get(
+            "https://maven.neoforged.net/releases/net/neoforged/neoforge/maven-metadata.xml"
+        ).content
+        tree = ET.fromstring(xml)
+        for i, version_xml in enumerate(tree.findall(".//version")):
+            neoversions.append(version_xml.text)
+        neoversion = f"{version[2:]}.{build}"
+        if neoversion not in neoversions:
+            raise HTTPException(status_code=501, detail="This version does not exist!")
+        return "Hi!"  # Redirect to download here!
     else:
         raise HTTPException(status_code=501, detail="Not Implemented!")
 
