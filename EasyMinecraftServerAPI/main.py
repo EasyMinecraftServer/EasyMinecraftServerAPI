@@ -145,10 +145,26 @@ def download(software: str = "vanilla", version: str = "latest", build: str = "l
         tree = ET.fromstring(xml)
         for i, version_xml in enumerate(tree.findall(".//version")):
             neoversions.append(version_xml.text)
-        neoversion = f"{version[2:]}.{build}"
-        if neoversion not in neoversions:
-            raise HTTPException(status_code=501, detail="This version does not exist!")
-        return "Hi!"  # Redirect to download here!
+        if version != "latest" and build != "latest":
+            neoversion = f"{version[2:]}.{build}"
+            if neoversion not in neoversions:
+                raise HTTPException(
+                    status_code=501, detail="This version does not exist!"
+                )
+        elif version == "latest" and build != "latest":
+            neoversion = f"{tree.find('.//latest').text[:4]}.{build}"
+            if neoversion not in neoversions:
+                raise HTTPException(
+                    status_code=501, detail="This version does not exist!"
+                )
+        elif version == "latest" and build == "latest":
+            neoversion = tree.find(".//latest").text
+        else:
+            raise HTTPException(status_code=501, detail="Not Implemented!")
+        return RedirectResponse(
+            url=f"https://maven.neoforged.net/releases/net/neoforged/neoforge/{neoversion}/neoforge-{neoversion}-installer.jar",
+            status_code=status.HTTP_307_TEMPORARY_REDIRECT,
+        )
     else:
         raise HTTPException(status_code=501, detail="Not Implemented!")
 

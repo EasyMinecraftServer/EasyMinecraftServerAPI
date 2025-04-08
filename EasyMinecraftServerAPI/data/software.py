@@ -8,7 +8,7 @@ softwares = [
     "leaves",  # done
     "sponge",
     "forge",
-    "neoforge",
+    "neoforge",  # done
     "fabric",  # done
     "quilt",  # done
     "bungeecord",
