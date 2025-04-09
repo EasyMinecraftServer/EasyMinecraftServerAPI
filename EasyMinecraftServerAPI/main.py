@@ -193,6 +193,90 @@ def download(software: str = "vanilla", version: str = "latest", build: str = "l
             url=f"https://maven.minecraftforge.net/net/minecraftforge/forge/{lexversion}/forge-{lexversion}-installer.jar",
             status_code=status.HTTP_307_TEMPORARY_REDIRECT,
         )
+    elif software == "spongevanilla":
+        spongeversions = []
+        xml = requests.get(
+            "https://repo.spongepowered.org/repository/maven-releases/org/spongepowered/spongevanilla/maven-metadata.xml"
+        ).content
+        tree = ET.fromstring(xml)
+        for i, version_xml in enumerate(tree.findall(".//version")):
+            spongeversions.append(version_xml.text)
+        if version != "latest" and build != "latest":
+            spongeversion = f"{version}.{build}"
+            if spongeversion not in spongeversions:
+                raise HTTPException(
+                    status_code=501, detail="This version does not exist!"
+                )
+        elif version == "latest" and build != "latest":
+            spongeversion = f"{tree.find('.//latest').text[:4]}.{build}"
+            if spongeversion not in spongeversions:
+                raise HTTPException(
+                    status_code=501, detail="This version does not exist!"
+                )
+        elif version == "latest" and build == "latest":
+            spongeversion = tree.find(".//latest").text
+        else:
+            raise HTTPException(status_code=501, detail="Not Implemented!")
+        return RedirectResponse(
+            url=f"https://repo.spongepowered.org/repository/maven-releases/org/spongepowered/spongevanilla/{spongeversion}/spongevanilla-{spongeversion}-installer.jar",
+            status_code=status.HTTP_307_TEMPORARY_REDIRECT,
+        )
+    elif software == "spongeforge":
+        spongeversions = []
+        xml = requests.get(
+            "https://repo.spongepowered.org/repository/maven-releases/org/spongepowered/spongeforge/maven-metadata.xml"
+        ).content
+        tree = ET.fromstring(xml)
+        for i, version_xml in enumerate(tree.findall(".//version")):
+            spongeversions.append(version_xml.text)
+        if version != "latest" and build != "latest":
+            spongeversion = f"{version}.{build}"
+            if spongeversion not in spongeversions:
+                raise HTTPException(
+                    status_code=501, detail="This version does not exist!"
+                )
+        elif version == "latest" and build != "latest":
+            spongeversion = f"{tree.find('.//latest').text[:4]}.{build}"
+            if spongeversion not in spongeversions:
+                raise HTTPException(
+                    status_code=501, detail="This version does not exist!"
+                )
+        elif version == "latest" and build == "latest":
+            spongeversion = tree.find(".//latest").text
+        else:
+            raise HTTPException(status_code=501, detail="Not Implemented!")
+        return RedirectResponse(
+            url=f"https://repo.spongepowered.org/repository/maven-releases/org/spongepowered/spongeforge/{spongeversion}/spongeforge-{spongeversion}-installer.jar",
+            status_code=status.HTTP_307_TEMPORARY_REDIRECT,
+        )
+    elif software == "spongeneo":
+        spongeversions = []
+        xml = requests.get(
+            "https://repo.spongepowered.org/repository/maven-releases/org/spongepowered/spongeneo/maven-metadata.xml"
+        ).content
+        tree = ET.fromstring(xml)
+        for i, version_xml in enumerate(tree.findall(".//version")):
+            spongeversions.append(version_xml.text)
+        if version != "latest" and build != "latest":
+            spongeversion = f"{version}.{build}"
+            if spongeversion not in spongeversions:
+                raise HTTPException(
+                    status_code=501, detail="This version does not exist!"
+                )
+        elif version == "latest" and build != "latest":
+            spongeversion = f"{tree.find('.//latest').text[:4]}.{build}"
+            if spongeversion not in spongeversions:
+                raise HTTPException(
+                    status_code=501, detail="This version does not exist!"
+                )
+        elif version == "latest" and build == "latest":
+            spongeversion = tree.find(".//latest").text
+        else:
+            raise HTTPException(status_code=501, detail="Not Implemented!")
+        return RedirectResponse(
+            url=f"https://repo.spongepowered.org/repository/maven-releases/org/spongepowered/spongeneo/{spongeversion}/spongeneo-{spongeversion}-installer.jar",
+            status_code=status.HTTP_307_TEMPORARY_REDIRECT,
+        )
     else:
         raise HTTPException(status_code=501, detail="Not Implemented!")
 

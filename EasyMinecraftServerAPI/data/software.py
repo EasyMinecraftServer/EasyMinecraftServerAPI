@@ -6,8 +6,10 @@ softwares = [
     "pufferfish",  # done
     "purpur",  # setup.md
     "leaves",  # done
-    "sponge",
-    "lexforge",
+    "spongevanilla",  # done
+    "spongeforge",  # done
+    "spongeneo",  # done
+    "lexforge",  # done
     "neoforge",  # done
     "fabric",  # done
     "quilt",  # done
