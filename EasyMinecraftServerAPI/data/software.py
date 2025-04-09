@@ -7,7 +7,7 @@ softwares = [
     "purpur",  # setup.md
     "leaves",  # done
     "sponge",
-    "forge",
+    "lexforge",
     "neoforge",  # done
     "fabric",  # done
     "quilt",  # done

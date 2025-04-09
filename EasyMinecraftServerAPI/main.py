@@ -165,6 +165,34 @@ def download(software: str = "vanilla", version: str = "latest", build: str = "l
             url=f"https://maven.neoforged.net/releases/net/neoforged/neoforge/{neoversion}/neoforge-{neoversion}-installer.jar",
             status_code=status.HTTP_307_TEMPORARY_REDIRECT,
         )
+    elif software == "lexforge":
+        lexversions = []
+        xml = requests.get(
+            "https://maven.minecraftforge.net/net/minecraftforge/forge/maven-metadata.xml"
+        ).content
+        tree = ET.fromstring(xml)
+        for i, version_xml in enumerate(tree.findall(".//version")):
+            lexversions.append(version_xml.text)
+        if version != "latest" and build != "latest":
+            lexversion = f"{version}.{build}"
+            if lexversion not in lexversions:
+                raise HTTPException(
+                    status_code=501, detail="This version does not exist!"
+                )
+        elif version == "latest" and build != "latest":
+            lexversion = f"{tree.find('.//latest').text[:4]}.{build}"
+            if lexversion not in lexversions:
+                raise HTTPException(
+                    status_code=501, detail="This version does not exist!"
+                )
+        elif version == "latest" and build == "latest":
+            lexversion = tree.find(".//latest").text
+        else:
+            raise HTTPException(status_code=501, detail="Not Implemented!")
+        return RedirectResponse(
+            url=f"https://maven.minecraftforge.net/net/minecraftforge/forge/{lexversion}/forge-{lexversion}-installer.jar",
+            status_code=status.HTTP_307_TEMPORARY_REDIRECT,
+        )
     else:
         raise HTTPException(status_code=501, detail="Not Implemented!")
 
