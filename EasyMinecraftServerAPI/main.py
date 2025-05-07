@@ -6,6 +6,7 @@
 
 from fastapi import FastAPI, Response, status, HTTPException
 from fastapi.responses import RedirectResponse
+from scalar_fastapi import get_scalar_api_reference
 from data.software import softwares, setupmd
 import requests
 import javaproperties
@@ -29,11 +30,12 @@ app = FastAPI(
 )
 
 
-@app.get("/")
+@app.get("/", include_in_schema=False)
 async def root():
-    return RedirectResponse(
-        url="https://github.com/EasyMinecraftServer/EasyMinecraftServerAPI/wiki",
-        status_code=status.HTTP_307_TEMPORARY_REDIRECT,
+    return get_scalar_api_reference(
+        openapi_url=app.openapi_url,
+        title=app.title,
+        hide_models=True,
     )
 
 
