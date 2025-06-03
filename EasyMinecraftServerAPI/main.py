@@ -39,12 +39,7 @@ async def root():
     )
 
 
-@app.get("/download")  # Vanilla, latest version, latest build
-@app.get("/download/{software}")  # Latest version, latest build
-@app.get("/download/{software}/{version}")  # Latest build
-@app.get(
-    "/download/{software}/{version}/{build}"
-)  # Specific build (No Effect on Vanilla)
+@app.get("/download")
 def download(software: str = "vanilla", version: str = "latest", build: str = "latest"):
     if software not in softwares:
         raise HTTPException(
