@@ -5,9 +5,10 @@
 # You should have received a copy of the GNU Affero General Public License along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 from fastapi import FastAPI, Response, status, HTTPException
-from fastapi.responses import RedirectResponse
-from scalar_fastapi import get_scalar_api_reference
+from fastapi.responses import RedirectResponse, HTMLResponse
+from scalar_doc import ScalarDoc
 from data.software import softwares, setupmd
+import data.models as models
 import requests
 import javaproperties
 import json
@@ -15,7 +16,7 @@ import xml.etree.ElementTree as ET
 
 app = FastAPI(
     title="EasyMinecraftServer API",
-    version="0.0.1",
+    version="0.0.5",
     contact={
         "name": "Nucceteere",
         "email": "ruzgar@nucceteere.xyz",
@@ -30,16 +31,32 @@ app = FastAPI(
 )
 
 
+@app.get("/openapi", include_in_schema=False)
+async def openapi():
+    with open("EasyMinecraftServerAPI/data/openapi.json", "r") as file:
+        openapi = file.read()
+        openapi = json.loads(openapi)
+    return openapi
+
+
 @app.get("/", include_in_schema=False)
 async def root():
-    return get_scalar_api_reference(
-        openapi_url=app.openapi_url,
-        title=app.title,
-        hide_models=True,
-    )
+    docs = ScalarDoc.from_spec(spec="/openapi", mode="url")
+    docs.set_title("EasyMinecraftServer API")
+    docs_html = docs.to_html()
+    return HTMLResponse(docs_html)
 
 
-@app.get("/download")
+@app.get(
+    "/download",
+    summary="Download server software",
+    description="Redirects to the download link for the software specified",
+    tags=["Download"],
+    status_code=307,
+    response_class=RedirectResponse,
+    response_model_exclude=422,
+    responses={501: {"description": "Invalid Type", "model": models.Message}},
+)
 def download(software: str = "vanilla", version: str = "latest", build: str = "latest"):
     if software not in softwares:
         raise HTTPException(
@@ -278,26 +295,63 @@ def download(software: str = "vanilla", version: str = "latest", build: str = "l
         raise HTTPException(status_code=501, detail="Not Implemented!")
 
 
-@app.get("/config/server.properties")
+@app.get(
+    "/config/server.properties",
+    summary="Return server.properties",
+    description="Returns a server.properties with secure defaults",
+    tags=["Config"],
+    status_code=200,
+    response_model_exclude=422,
+    responses={
+        200: {
+            "description": "server.properties",
+            "content": {
+                "text/x-java-properties": {
+                    "example": "hide-online-players=true\nwhite-list=true"
+                }
+            },
+        }
+    },
+)
 async def serverproperties():
-    propertiesdata = requests.get("https://server.properties/")
-    properties = javaproperties.loads(propertiesdata.content)
+    with open("EasyMinecraftServerAPI/data/server.properties", "r") as file:
+        propertiesdata = file.read()
+    properties = javaproperties.loads(propertiesdata)
     properties["hide-online-players"] = "true"
     properties["white-list"] = "true"
-    properties = javaproperties.dumps(properties)
+    properties = javaproperties.dumps(
+        properties, comments="Minecraft server properties"
+    )
     return Response(content=properties, media_type="text/x-java-properties")
 
 
-@app.get("/config/whitelist.json")
+@app.get(
+    "/config/whitelist.json",
+    summary="Return whitelist.json",
+    description="Returns a whitelist.json file with the provided username",
+    tags=["Config"],
+    status_code=200,
+    response_model_exclude=422,
+    responses={
+        200: {
+            "description": "whitelist.json",
+            "content": {
+                "application/json": {
+                    "example": '[\n  {"uuid":"9351f64d-8e92-451f-b764-7b5a3d5bec46",\n   "name":"Nucceteere"\n  }\n]'
+                }
+            },
+        }
+    },
+)
 async def whitelistjson(username: str = None):
     if username is None:
         raise HTTPException(
-            status_code=418,
+            status_code=422,
             detail="Please enter a username. Example: /config/whitelist.json?username=Notch",
         )
     playermeta = requests.get(f"https://playerdb.co/api/player/minecraft/{username}")
     if playermeta.status_code == 400:
-        raise HTTPException(status_code=418, detail="User doesn't exist!")
+        raise HTTPException(status_code=422, detail="User doesn't exist!")
     playermeta = json.loads(playermeta.content)
     uuid = playermeta["data"]["player"]["id"]
     whitelist = [{"uuid": uuid, "name": username}]
@@ -322,5 +376,5 @@ Canonical: https://api.nucceteere.xyz/security
 Canonical: https://api.nucceteere.xyz/security.txt
 Canonical: https://api.nucceteere.xyz/.well-known/security
 Canonical: https://api.nucceteere.xyz/.well-known/security.txt
-Policy: https://git.funtimes909.xyz/Nucceteere/EasyMinecraftServerAPI/src/branch/master/SECURITY.md"""
+Policy: https://github.com/EasyMinecraftServer/EasyMinecraftServerAPI/blob/master/SECURITY.md"""
     return Response(content=data, media_type="text/plain")

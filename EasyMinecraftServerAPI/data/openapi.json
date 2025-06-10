@@ -1,0 +1,178 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "EasyMinecraftServer API",
+    "contact": {
+      "name": "Nucceteere",
+      "email": "ruzgar@nucceteere.xyz"
+    },
+    "license": {
+      "name": "AGPL 3.0",
+      "identifier": "AGPL-3.0-or-later",
+      "url": "https://www.gnu.org/licenses/agpl-3.0.txt"
+    },
+    "version": "0.0.5"
+  },
+  "paths": {
+    "/download": {
+      "get": {
+        "tags": ["Download"],
+        "summary": "Download server software",
+        "description": "Redirects to the download link for the software specified",
+        "operationId": "download_download_get",
+        "parameters": [
+          {
+            "name": "software",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "vanilla",
+              "title": "Software"
+            }
+          },
+          {
+            "name": "version",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "latest",
+              "title": "Version"
+            }
+          },
+          {
+            "name": "build",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "latest",
+              "title": "Build"
+            }
+          }
+        ],
+        "responses": {
+          "307": {
+            "description": "Successful Response"
+          },
+          "501": {
+            "description": "Invalid Type",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Message"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/config/server.properties": {
+      "get": {
+        "tags": ["Config"],
+        "summary": "Return server.properties",
+        "description": "Returns a server.properties with secure defaults",
+        "operationId": "serverproperties_config_server_properties_get",
+        "responses": {
+          "200": {
+            "description": "server.properties",
+            "content": {
+              "text/x-java-properties": {
+                "example": "hide-online-players=true\nwhite-list=true"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/config/whitelist.json": {
+      "get": {
+        "tags": ["Config"],
+        "summary": "Return whitelist.json",
+        "description": "Returns a whitelist.json file with the provided username",
+        "operationId": "whitelistjson_config_whitelist_json_get",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "title": "Username"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "whitelist.json",
+            "content": {
+              "application/json": {
+                "schema": {},
+                "example": "[\n  {\"uuid\":\"9351f64d-8e92-451f-b764-7b5a3d5bec46\",\n   \"name\":\"Nucceteere\"\n  }\n]"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "Message": {
+        "properties": {
+          "message": {
+            "type": "string",
+            "title": "Message"
+          }
+        },
+        "type": "object",
+        "required": ["message"],
+        "title": "Message"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          }
+        },
+        "type": "object",
+        "required": ["loc", "msg", "type"],
+        "title": "ValidationError"
+      }
+    }
+  }
+}
